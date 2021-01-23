@@ -1,7 +1,20 @@
 <div class="content">
-    <div *ngFor="let article of articles">
-        <a routerLink="/article" [state]="article">{{ article.title }}</a>
+    <mat-form-field>
+        <input matInput type="text" placeholder="Search" #searchInput />
+        <mat-progress-bar
+            mode="determinate"
+            [value]="searchProgressValue"
+        ></mat-progress-bar>
+    </mat-form-field>
+
+    <div class="news" *ngIf="articles.length; else notFound">
     </div>
+
+    </div>
+
+    <ng-template #notFound>
+        <div class="not-found-text">{{ notFoundText }}</div>
+    </ng-template>
 
     <!-- Search mat input with debouncing and mat progress bar for loading -->
     <!-- List of fetched articles as snippets per the provided designs -->

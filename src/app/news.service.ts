@@ -1,19 +1,29 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { NewsApiService, TopHeadlinesResponse } from 'angular-news-api';
-import { Observable } from 'rxjs';
+import {
+    NewsApiService,
+    TopHeadlinesConfig,
+    TopHeadlinesResponse,
+} from "angular-news-api";
+import { Observable } from "rxjs";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class NewsService {
     constructor(private newsApiService: NewsApiService) {}
 
-    topHeadlines(): Observable<TopHeadlinesResponse> {
-       return this.newsApiService.topHeadlines({
-              sources: 'bbc-news,the-verge'
-            });
-       }
+    topHeadlines(searchValue?: string): Observable<TopHeadlinesResponse> {
+        const config: TopHeadlinesConfig = {
+            language: "en",
+        };
+
+        if (searchValue) {
+            config.q = searchValue;
+        }
+
+        return this.newsApiService.topHeadlines(config);
+    }
     /**
      * Consume the NewsApiService here, make sure
      * to set the language to 'en' english and built
