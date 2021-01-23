@@ -5,5 +5,17 @@
         <!-- Artile title, description, metadata -->
         <!-- Read more button -->
         <!-- Comments section -->
+        <section class="comments">
+            <h2>{{ comments.length }} Comments</h2>
+            <div class="comment" *ngFor="let comment of comments">
+                <img [src]="comment.avatar" [alt]="comment.name" />
+
+                <div class="comment__info">
+                    <span>{{comment.name}}</span>
+                    <span>{{comment.date | date}}</span>
+                </div>
+                <div class="comment__text">{{comment.comment}}</div>
+            </div>
+        </section>
     </div>
 </div>

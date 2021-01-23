@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Article } from 'angular-news-api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { ArticleComment } from '../models/comment.model';
 
 @Component({
     selector: 'app-news-detail',
@@ -10,9 +13,9 @@ import { map } from 'rxjs/operators';
     styleUrls: ['./news-detail.component.scss']
 })
 export class NewsDetailComponent implements OnInit {
-    public article$: Observable<object>;
+    public article$: Observable<Article>;
 
-    public comments: any[] = [
+    public comments: ArticleComment[] = [
         {
             name: 'Chris Nat',
             date: new Date(),
