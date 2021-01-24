@@ -1,21 +1,61 @@
 <div class="content">
-    <div *ngIf="(article$ | async) as article">
-        {{ article.title }} details
-        <!-- Artile man image -->
-        <!-- Artile title, description, metadata -->
-        <!-- Read more button -->
-        <!-- Comments section -->
-        <section class="comments">
-            <h2>{{ comments.length }} Comments</h2>
-            <div class="comment" *ngFor="let comment of comments">
-                <img [src]="comment.avatar" [alt]="comment.name" />
+    <div *ngIf="article$ | async as article" class="article">
+        <div class="article__image">
+            <img
+            [src]="
+                article.urlToImage
+                    ? article.urlToImage
+                    : '../../assets/images/placeholder.jpg'
+            "
+            [alt]="article.title"
+            onerror="this.src = '../../assets/images/placeholder.jpg'"
+        />
+        </div>
 
-                <div class="comment__info">
-                    <span>{{comment.name}}</span>
-                    <span>{{comment.date | date}}</span>
+
+        <div class="article__data">
+            <div class="article__meta">
+                <div *ngIf="article.source.name" class="article__source">
+                    {{ article.source.name }}
                 </div>
-                <div class="comment__text">{{comment.comment}}</div>
+                <div *ngIf="article.author" class="article__author">
+                    {{ article.author }}
+                </div>
+                <div *ngIf="article.publishedAt" class="article__publish-date">
+                    {{ article.publishedAt | date }}
+                </div>
+                <div class="article__comments-count">{{ commentsTitle }}</div>
             </div>
-        </section>
+
+            <div class="article__content">
+                <div class="article__title">{{ article.title }}</div>
+                <div>{{ article.content }}</div>
+
+                <!-- Read more button -->
+                <div class="article__read-more">
+                    <button
+                        mat-flat-button
+                        color="accent"
+                        (click)="goToArticle(article.url)"
+                    >
+                        Read more
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Comments -->
+    <section class="comments">
+        <h2>{{ commentsTitle }}</h2>
+        <div class="comment" *ngFor="let comment of comments">
+            <img [src]="comment.avatar" [alt]="comment.name" />
+
+            <div class="comment__meta">
+                <span>{{ comment.name }}</span>
+                <span>{{ comment.date | date }}</span>
+            </div>
+            <div class="comment__text">{{ comment.comment }}</div>
+        </div>
+    </section>
 </div>
