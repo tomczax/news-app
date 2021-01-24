@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { MatSnackBar } from "@angular/material";
 
 import {
     Article,
@@ -17,7 +18,10 @@ export class NewsService {
     private _loading$ = new BehaviorSubject<boolean>(false);
     private _currentSearchValue: string | null = null;
 
-    constructor(private newsApiService: NewsApiService) {}
+    constructor(
+        private newsApiService: NewsApiService,
+        private snackBar: MatSnackBar
+    ) {}
 
     get articles$(): Observable<Article[]> {
         return this._articles$.asObservable();
@@ -33,17 +37,6 @@ export class NewsService {
 
     // Pass null on component init or string on search input
     fetchArticles(searchValue: string | null): void {
-        // TODO Add progress event
-        // TODO remove
-        const localArticles = JSON.parse(localStorage.getItem("articles"));
-
-        if (localArticles) {
-            console.log({ localArticles });
-
-            this._articles$.next(localArticles);
-            return;
-        }
-        ///////////////////////////////////////////////////////////////////
 
         if (
             (searchValue === null && this.currentSearchValue) ||
@@ -71,19 +64,19 @@ export class NewsService {
         }
 
         this._loading$.next(true);
-        this.newsApiService
-            .topHeadlines(config)
-            .subscribe((response: TopHeadlinesResponse) => {
-                console.log(response);
 
+        this.newsApiService.topHeadlines(config).subscribe(
+            (response: TopHeadlinesResponse) => {
                 this._loading$.next(false);
                 this._articles$.next(response.articles);
-                // TODO remove
-                localStorage.setItem(
-                    "articles",
-                    JSON.stringify(response.articles)
-                );
-            });
+            },
+            (error) => {
+                this._loading$.next(false);
+                this.snackBar.open("Error occured when fetching articles", "Error", {
+                    duration: 2000,
+                });
+            }
+        );
     }
 
     private fetchArticlesIfEmpty(searchValue: string | null): void {

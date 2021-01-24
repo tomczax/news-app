@@ -2,16 +2,15 @@
     <section *ngIf="article$ | async as article" class="article">
         <div class="article__image">
             <img
-            [src]="
-                article.urlToImage
-                    ? article.urlToImage
-                    : '../../assets/images/placeholder.jpg'
-            "
-            [alt]="article.title"
-            onerror="this.src = '../../assets/images/placeholder.jpg'"
-        />
+                [src]="
+                    article.urlToImage
+                        ? article.urlToImage
+                        : '../../assets/images/placeholder.jpg'
+                "
+                [alt]="article.title"
+                onerror="this.src = '../../assets/images/placeholder.jpg'"
+            />
         </div>
-
 
         <div class="article__data">
             <div class="article__meta">
@@ -28,7 +27,14 @@
             </div>
 
             <div class="article__content">
-                <div class="article__title">{{ article.title }}</div>
+                <a
+                    class="article__title"
+                    [href]="article.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {{ article.title }}
+                </a>
                 <div>{{ article.description }}</div>
                 <div>{{ article.content }}</div>
 

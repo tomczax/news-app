@@ -8,9 +8,7 @@
                 #searchInput
                 [value]="newsService.currentSearchValue"
             />
-            <mat-progress-bar
-                mode="indeterminate"
-            ></mat-progress-bar>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </mat-form-field>
     </div>
     <!-- News grid -->
@@ -34,13 +32,21 @@
 
             <div class="article__data">
                 <div class="article__meta">
-                    <span>{{ article.source?.name }}</span>
+                    <a
+                        [href]="article.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >{{ article.source?.name }}</a
+                    >
                     <span>{{ article.publishedAt | date }}</span>
                 </div>
 
-                <a routerLink="/article" [state]="article" class="article__title">{{
-                    article.title
-                }}</a>
+                <a
+                    routerLink="/article"
+                    [state]="article"
+                    class="article__title"
+                    >{{ article.title }}</a
+                >
 
                 <div>{{ article.description }}</div>
             </div>
