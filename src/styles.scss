@@ -1,7 +1,5 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat");
-
-$primary-color: #f74062;
+@import './app/custom-theme.scss';
 
 body {
     font-family: "Montserrat", Arial, sans-serif;
@@ -23,12 +21,6 @@ body {
         overflow: hidden;
         max-width: 1200px;
         margin: 0 auto;
-
-        ::ng-deep {
-            button.mat-accent {
-                background: $primary-color;
-            }
-        }
 
         .article__title {
             font-size: 1.5rem;

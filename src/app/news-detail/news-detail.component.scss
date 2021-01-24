@@ -1,3 +1,5 @@
+@import '../custom-theme.scss';
+
 .article {
     &__image {
         max-height: 70vh;
@@ -32,7 +34,7 @@
         }
 
         .article__comments-count {
-            color: #f74062;
+            color: mat-color($primary);
         }
     }
 

@@ -1,0 +1,41 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$mat-news-primary: (
+    50 : #fee8ec,
+    100 : #fdc6d0,
+    200 : #fba0b1,
+    300 : #f97991,
+    400 : #f85d7a,
+    500 : #f74062,
+    600 : #f63a5a,
+    700 : #f53250,
+    800 : #f32a46,
+    900 : #f11c34,
+    A100 : #ffffff,
+    A200 : #fff2f3,
+    A400 : #ffbfc5,
+    A700 : #ffa6ae,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+  $primary: mat-palette($mat-news-primary, 500);
+  $accent: mat-palette($mat-news-primary, 900);
+  $theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
