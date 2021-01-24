@@ -1,23 +1,56 @@
 <div class="content">
-    <mat-form-field>
-        <input matInput type="text" placeholder="Search" #searchInput />
-        <mat-progress-bar
-            mode="determinate"
-            [value]="searchProgressValue"
-        ></mat-progress-bar>
-    </mat-form-field>
+    <!-- Search input -->
+    <div class="search" [class.loading]="loading">
+        <mat-form-field>
+            <input
+                matInput
+                placeholder="Search"
+                #searchInput
+                [value]="newsService.currentSearchValue"
+            />
+            <mat-progress-bar
+                mode="indeterminate"
+            ></mat-progress-bar>
+        </mat-form-field>
+    </div>
+    <!-- News grid -->
+    <div
+        class="news"
+        *ngIf="!loading && (articles$ | async).length; else notFound"
+    >
+        <!-- Article -->
+        <div *ngFor="let article of articles$ | async" class="article">
+            <a class="article__image" routerLink="/article" [state]="article">
+                <img
+                    [src]="
+                        article.urlToImage
+                            ? article.urlToImage
+                            : '../../assets/images/placeholder.jpg'
+                    "
+                    onerror="this.src = '../../assets/images/placeholder.jpg'"
+                    [alt]="article.title"
+                />
+            </a>
 
-    <div class="news" *ngIf="articles.length; else notFound">
+            <div class="article__data">
+                <div class="article__meta">
+                    <span>{{ article.source?.name }}</span>
+                    <span>{{ article.publishedAt | date }}</span>
+                </div>
+
+                <a routerLink="/article" [state]="article">{{
+                    article.title
+                }}</a>
+
+                <div>{{ article.description }}</div>
+            </div>
+        </div>
     </div>
 
-    </div>
-
+    <!-- Articles not found message -->
     <ng-template #notFound>
-        <div class="not-found-text">{{ notFoundText }}</div>
+        <div class="not-found-message" *ngIf="!loading">
+            {{ notFoundText }}
+        </div>
     </ng-template>
-
-    <!-- Search mat input with debouncing and mat progress bar for loading -->
-    <!-- List of fetched articles as snippets per the provided designs -->
-    <!-- No results indication -->
-
 </div>

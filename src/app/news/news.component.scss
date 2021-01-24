@@ -1,0 +1,118 @@
+@mixin grid-template-small-screen {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 20px;
+    row-gap: 30px;
+}
+
+.content {
+    padding: 10px 0;
+}
+
+.search {
+    @include grid-template-small-screen;
+
+    ::ng-deep mat-form-field {
+        padding: 0 20px;
+    }
+}
+
+.news {
+    @include grid-template-small-screen;
+}
+
+// Show progress bar if loading
+::ng-deep .search {
+    .mat-progress-bar {
+        top: 8px;
+        height: 2px;
+        display: none;
+    }
+
+    .mat-form-field-appearance-legacy .mat-form-field-underline {
+        height: 2px;
+    }
+
+    &.loading {
+        .mat-form-field-underline {
+            display: none;
+        }
+
+        .mat-progress-bar {
+            display: block;
+        }
+    }
+}
+
+.article {
+    width: 100%;
+    overflow: hidden;
+
+    &__image {
+        width: 100%;
+        overflow: hidden;
+        cursor: pointer;
+        
+        img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.2s;
+
+            &:hover {
+                transform: scale(1.25);
+            }
+        }
+    }
+
+    &__meta {
+        text-transform: uppercase;
+
+        span:first-child {
+            margin-right: 20px;
+        }
+    }
+
+    &__data {
+        background: white;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        top: -20px;
+
+        a {
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: black;
+        }
+    }
+}
+
+.not-found-message {
+    font-size: 2rem;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+// Media queries
+@media (min-width: 1000px) {
+    .search,
+    .news {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 1200px) {
+    .content {
+        padding: 10px 20px;
+    }
+
+    .search mat-form-field {
+        padding: 0;
+    }
+}

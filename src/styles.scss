@@ -1,18 +1,33 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-
-body {
-  font-family: "Montserrat", Arial, sans-serif;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 1.8;
-  color: rgba(0, 0, 0, 0.7);
-  overflow-x: hidden;
-  background-color: #FAFAFA;
-}
+@import url("https://fonts.googleapis.com/css2?family=Montserrat");
 
 $primary-color: #f74062;
 
-.content {
+body {
+    font-family: "Montserrat", Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(0, 0, 0, 0.7);
+    overflow-x: hidden;
+    background-color: #fafafa;
+    margin: 0;
 
+    * {
+        box-sizing: border-box;
+    }
+
+    .content {
+        background-color: white;
+        min-height: calc(100vh - 64px);
+        overflow: hidden;
+        max-width: 1200px;
+        margin: 0 auto;
+
+        ::ng-deep {
+            button.mat-accent {
+                background: $primary-color;
+            }
+        }
+    }
 }

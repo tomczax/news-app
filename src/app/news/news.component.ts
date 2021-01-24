@@ -9,7 +9,12 @@ import {
 
 import { Article } from "angular-news-api";
 import { fromEvent, Observable, Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged, map, takeUntil } from "rxjs/operators";
+import {
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    takeUntil,
+} from "rxjs/operators";
 
 import { NewsService } from "../news.service";
 
@@ -22,7 +27,7 @@ export class NewsComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("searchInput") searchInput: ElementRef;
 
     public articles$: Observable<Article[]>;
-    public loading$: Observable<boolean>;
+    public loading: boolean;
     public search: string;
     public searchProgressValue = 0;
 
@@ -34,7 +39,9 @@ export class NewsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.newsService.fetchArticles(null);
 
         this.articles$ = this.newsService.articles$;
-        this.loading$ = this.newsService.articlesLoading$;
+        this.newsService.articlesLoading$
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((loading) => (this.loading = loading));
     }
 
     ngAfterViewInit() {
