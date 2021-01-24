@@ -25,6 +25,10 @@
         flex-wrap: wrap;
         margin: 20px 20px 0 20px;
 
+        * {
+            text-align: end;
+        }
+
         div:not(:last-child) {
             margin-right: 20px;
         }

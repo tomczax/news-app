@@ -8,51 +8,56 @@
                 #searchInput
                 [value]="newsService.currentSearchValue"
             />
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            <mat-progress-bar
+                *ngIf="loading"
+                mode="indeterminate"
+            ></mat-progress-bar>
         </mat-form-field>
     </div>
     <!-- News grid -->
-    <section
-        class="news"
-        *ngIf="!loading && (articles$ | async).length; else notFound"
-    >
-        <!-- Article -->
-        <article *ngFor="let article of articles$ | async" class="article">
-            <a class="article__image" routerLink="/article" [state]="article">
-                <img
-                    [src]="
-                        article.urlToImage
-                            ? article.urlToImage
-                            : '../../assets/images/placeholder.jpg'
-                    "
-                    onerror="this.src = '../../assets/images/placeholder.jpg'"
-                    [alt]="article.title"
-                />
-            </a>
-
-            <div class="article__data">
-                <div class="article__meta">
-                    <a
-                        [href]="article.url"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >{{ article.source?.name }}</a
-                    >
-                    <span>{{ article.publishedAt | date }}</span>
-                </div>
-
+    <ng-container *ngIf="!loading && articles$ | async as articles">
+        <section class="news" *ngIf="articles.length; else notFound">
+            <!-- Article -->
+            <article *ngFor="let article of articles" class="article">
                 <a
+                    class="article__image"
                     routerLink="/article"
                     [state]="article"
-                    class="article__title"
-                    >{{ article.title }}</a
                 >
+                    <img
+                        [src]="
+                            article.urlToImage
+                                ? article.urlToImage
+                                : '../../assets/images/placeholder.jpg'
+                        "
+                        onerror="this.src = '../../assets/images/placeholder.jpg'"
+                        [alt]="article.title"
+                    />
+                </a>
 
-                <div>{{ article.description }}</div>
-            </div>
-        </article>
-    </section>
+                <div class="article__data">
+                    <div class="article__meta">
+                        <a
+                            [href]="article.url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >{{ article.source?.name }}</a
+                        >
+                        <span>{{ article.publishedAt | date }}</span>
+                    </div>
 
+                    <a
+                        routerLink="/article"
+                        [state]="article"
+                        class="article__title"
+                        >{{ article.title }}</a
+                    >
+
+                    <div>{{ article.description }}</div>
+                </div>
+            </article>
+        </section>
+    </ng-container>
     <!-- Articles not found message -->
     <ng-template #notFound>
         <div class="not-found-message" *ngIf="!loading">

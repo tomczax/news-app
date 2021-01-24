@@ -14,7 +14,7 @@
 }
 
 // Show progress bar if loading
-.search ::ng-deep {
+::ng-deep .search {
     @include grid-template-small-screen;
 
     mat-form-field {
@@ -24,7 +24,6 @@
     .mat-progress-bar {
         top: 5px;
         height: 2px;
-        visibility: hidden;
     }
 
     .mat-form-field-appearance-legacy .mat-form-field-underline {
@@ -33,11 +32,7 @@
 
     &.loading {
         .mat-form-field-underline {
-            visibility: hidden;
-        }
-
-        .mat-progress-bar {
-            visibility: visible;
+            display: none;
         }
     }
 }
