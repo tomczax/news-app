@@ -1,5 +1,5 @@
-<div class="content">
-    <div *ngIf="article$ | async as article" class="article">
+<main class="content">
+    <section *ngIf="article$ | async as article" class="article">
         <div class="article__image">
             <img
             [src]="
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Comments -->
     <section class="comments">
@@ -59,4 +59,4 @@
             <div class="comment__text">{{ comment.comment }}</div>
         </div>
     </section>
-</div>
+</main>
