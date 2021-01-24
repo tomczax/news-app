@@ -8,4 +8,4 @@ Angular Material
 ## Run the app
 
 * npm i
-* ng s -o
+* ng serve --prod -o

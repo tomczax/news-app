@@ -42,17 +42,18 @@
     overflow: hidden;
 
     &__image {
+        display: inline-block;
         width: 100%;
         overflow: hidden;
-        cursor: pointer;
 
         img {
+            display: block;
             width: 100%;
             height: auto;
             transition: transform 0.2s;
 
             &:hover {
-                transform: scale(1.25);
+                transform: scale(1.15);
             }
         }
     }
