@@ -2,13 +2,14 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
+    OnDestroy,
     OnInit,
     ViewChild,
 } from "@angular/core";
 
-import { Article, TopHeadlinesResponse } from "angular-news-api";
-import { fromEvent } from "rxjs";
-import { debounceTime, distinctUntilChanged, map, tap } from "rxjs/operators";
+import { Article } from "angular-news-api";
+import { fromEvent, Observable, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged, map, takeUntil } from "rxjs/operators";
 
 import { NewsService } from "../news.service";
 
@@ -17,54 +18,53 @@ import { NewsService } from "../news.service";
     templateUrl: "./news.component.html",
     styleUrls: ["./news.component.scss"],
 })
-export class NewsComponent implements OnInit, AfterViewInit {
+export class NewsComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("searchInput") searchInput: ElementRef;
 
-    public articles: Article[] = [];
+    public articles$: Observable<Article[]>;
+    public loading$: Observable<boolean>;
     public search: string;
     public searchProgressValue = 0;
-    private currentSearchValue = "";
 
-    constructor(private newsService: NewsService) {}
+    private destroyed$ = new Subject<void>();
+
+    constructor(public newsService: NewsService) {}
 
     public ngOnInit() {
-        if (!this.articles.length) {
-            this.fetchArticles();
-        }
+        this.newsService.fetchArticles(null);
+
+        this.articles$ = this.newsService.articles$;
+        this.loading$ = this.newsService.articlesLoading$;
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() {
         this.listenForSearch();
+    }
+
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.complete();
     }
 
     get notFoundText(): string {
         return (
             "No articles found" +
-            (this.currentSearchValue ? ` for "${this.currentSearchValue}"` : "")
+            (this.newsService.currentSearchValue
+                ? ` for "${this.newsService.currentSearchValue}"`
+                : "")
         );
-    }
-
-    private fetchArticles(search?: string): void {
-        // TODO Add progress event
-        this.newsService
-            .topHeadlines(search)
-            .pipe(tap((response) => console.log(response)))
-            .subscribe(
-                (response: TopHeadlinesResponse) =>
-                    (this.articles = response.articles)
-            );
     }
 
     private listenForSearch(): void {
         fromEvent(this.searchInput.nativeElement, "keyup")
             .pipe(
+                takeUntil(this.destroyed$),
                 map((event: any) => event.target.value),
                 debounceTime(750),
                 distinctUntilChanged()
             )
-            .subscribe((searchValue: string) => {
-                this.currentSearchValue = searchValue;
-                this.fetchArticles(searchValue);
-            });
+            .subscribe((searchValue: string) =>
+                this.newsService.fetchArticles(searchValue)
+            );
     }
 }
